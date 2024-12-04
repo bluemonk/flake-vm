@@ -13,5 +13,12 @@
           ./configuration.nix
         ];
       };
+      apps = rec {
+        default = test;
+        test = {
+          type = "app";
+          program = "${nixosConfigurations.test.config.system.build.vm}/bin/run-nixos-vm";
+        };
+      };
     };
 }
