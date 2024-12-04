@@ -1,28 +1,17 @@
 {
-  inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
-    flake-utils = {
-      url = "github:numtide/flake-utils";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-  };
-
-  outputs =
-    { self, nixpkgs, ... }@inputs:
-    inputs.flake-utils.lib.eachDefaultSystem (system: rec {
+  outputs = { self, nixpkgs, ... }:
+    let
+      system = "x86_64-linux";
+    in
+    {
+      # test is a hostname for our machine
       nixosConfigurations.test = nixpkgs.lib.nixosSystem {
         inherit system;
-        specialArgs.inputs = inputs;
         modules = [
           ./configuration.nix
         ];
       };
-      apps = {
-        default = {
-          type = "app";
-          program = "${nixosConfigurations.test.config.system.build.vm}/bin/run-nixos-vm";
-        };
-      };
-    });
+    };
 }
