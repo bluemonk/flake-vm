@@ -4,14 +4,15 @@
   outputs = { self, nixpkgs, ... }:
     let
       system = "x86_64-linux";
+      test-vm = nixpkgs.lib.nixosSystem {
+        inherit system;
+        modules = [ ./configuration.nix ];
+      };
     in
     {
-      # test is a hostname for our machine
-      nixosConfigurations.test = nixpkgs.lib.nixosSystem {
-        inherit system;
-        modules = [
-          ./configuration.nix
-        ];
+      apps.${system}.default = {
+        type = "app";
+        program = "${test-vm.config.system.build.vm}/bin/run-nixos-vm";        
       };
     };
 }
