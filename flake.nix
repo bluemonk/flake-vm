@@ -14,5 +14,6 @@
         type = "app";
         program = "${test-vm.config.system.build.vm}/bin/run-nixos-vm";        
       };
+      defaultPackage.${system} = test-vm.config.system.build.vm;
     };
 }
