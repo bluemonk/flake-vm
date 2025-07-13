@@ -10,10 +10,6 @@
       };
     in
     {
-      apps.${system}.default = {
-        type = "app";
-        program = "${test-vm.config.system.build.vm}/bin/run-nixos-vm";        
-      };
-      defaultPackage.${system} = test-vm.config.system.build.vm;
+      packages.${system}.default = test-vm.config.system.build.vm;
     };
 }
